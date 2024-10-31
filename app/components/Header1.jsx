@@ -16,6 +16,17 @@ const Header1 = () => {
        <Block title={'Fusion for business'} para={"Trusted by 500 corporates"}/>
        <Block title={'List your property'} para={"Start earning in 30 minute"}/>
        <Block title={'111-111-1111'} para={"Call us to book now"}/>
+       <div className='flex items-center px-3'>
+       <Image 
+            src={'globe.svg'} 
+            alt='demo' 
+            width={200} 
+            height={200} 
+            className='w-10 h-10 rounded-full mr-5'
+        />
+        <h3 className='font-bold'>Login / Signup
+        </h3>
+       </div>
     </div> 
     </div>
   )
