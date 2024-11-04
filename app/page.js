@@ -5,13 +5,13 @@ import Header3 from './components/Header3'
 import Image from 'next/image'
 import Head from 'next/head'
 import Header4 from './components/Header4'
-import Footer from './components/Footer'
+import Footer  from './components/Footer'
 
 const Page = () => {
   return (
     <div>
       <Head>
-        <title>Fusion: India's best online hotel booking site for sanatized today</title>
+        <title></title>
         <link rel='icon' href='/fusion-logo-.png'></link>
       </Head>
       <Header1/>

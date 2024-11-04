@@ -2,7 +2,7 @@
 
 const Footer = () => {
   return (
-    <div className="h-28 flex justify-center items-center bg-gray-200 text-2xl">
+    <div className="h-20 flex justify-center items-center bg-gray-200 text-2xl">
       All rights reserved. &copy; 2024
     </div>
   )
