@@ -13,7 +13,8 @@ module.exports = {
       },
       backgroundImage:{
         "login-background":'url("/login-bg.jpg")'
-      }
+      },
+      
     },
   },
   plugins: [],
