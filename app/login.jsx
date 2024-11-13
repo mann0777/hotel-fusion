@@ -8,7 +8,7 @@ const Login = () => {
         <title>Fusion - Login</title>
       </Head>
       <div className='flex h-screen justify-center items-center relative bg-login-background bg-no-repeat bg-cover'>
-        <div className='absolute w-full top-10 px-20 flex items-center  text-white'>
+        <div className='absolute w-full top-10 px-10 flex items-center  text-white'>
           <h2 className='text-5xl font-bold mr-5'>
             Fusion
           </h2>
