@@ -14,6 +14,12 @@ module.exports = {
       backgroundImage:{
         "login-background":'url("/login-bg.jpg")'
       },
+      height:{
+        'large-box' : '500px'
+      },
+      width:{
+        'image-box': '1400px'
+      }
       
     },
   },
