@@ -6,6 +6,7 @@ import connectDB from '@/db';
 
 // Use named export for POST method
 export async function POST(req) {
+    await connectDB();
     // Manually parse the request body as JSON
     const body = await req.json(); // This ensures the body is parsed
     const { email, password } = body; // Extract email and password
