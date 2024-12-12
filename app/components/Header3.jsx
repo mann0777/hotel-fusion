@@ -17,29 +17,29 @@ const Header3 = () => {
         <h2 className="text-4xl text-white text-center font-bold">
           Over 157,000 hotels and homes across 35 countries
         </h2>
-        <div className="grid grid-cols-5 my-5 mx-20">
+        <div className="flex justify-center  my-5 mx-20">
           <input
             type="text"
             placeholder="Search..."
-            className="h-16 outline-none px-3 text-lg border-r-2 border-gray-400 col-span-2"
+            className="w-6/12  h-16 outline-none px-3 text-lg border-r-2 border-gray-400 col-span-2"
             value={city} // bind input value to the state
             onChange={handleInputChange} // update state on change
           />
-          <input
-            type="text"
+          {/*<input
+            type="date"
             placeholder="Search..."
             className="h-16 outline-none px-3 text-lg border-r-2 border-gray-400 col-span-1"
           />
           <input
-            type="text"
+            type="date"
             placeholder="Search..."
             className="h-16 outline-none px-3 text-lg border-r-2 border-gray-400 col-span-1"
-          />
+          />*/}
           {/* Dynamically change the link based on user input */}
           <Link href={`/hotels?city=${city}`} passHref>
             <button
               type="submit"
-              className="h-16 px-3 py-2 col-span-1 bg-green-400 hover:cursor-pointer hover:bg-green-600 text-white"
+              className="h-16 px-3 py-2 w-72 bg-green-400 hover:cursor-pointer hover:bg-green-600 text-white"
             >
               Search
             </button>

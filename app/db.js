@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 // Your connection string (updated with your database name)
-const URI = "mongodb+srv://mannamloh77:Mannsharma77@project.zncnv.mongodb.net/FUSION?retryWrites=true&w=majority&appName=Project";
+const URI = process.env.MONGO_URI;
 
 
 const connectDB = async () => {

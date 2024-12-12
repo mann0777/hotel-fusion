@@ -38,7 +38,7 @@ export async function POST(req) {
     }
 
     // Generate a JWT token
-    const token = jwt.sign({ token: emailExists._id }, "Code_MS", { expiresIn: "30d" });
+    const token = jwt.sign({ token: emailExists._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
     // Return a successful response with the token
     return new Response(

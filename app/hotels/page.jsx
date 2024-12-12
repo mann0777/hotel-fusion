@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import Header3 from '../components/Header3';
 import Hotel from '../components/Hotel';
 import LoadingSpinner from '../LoadingSpinner';
+import Header1 from '@/components/Header1';
+
 
 async function fetchHotels(query) {
   const res = await fetch(`/api/example/hotels?city=${query}`);
@@ -48,6 +50,7 @@ const Hotels = () => {
 
   return (
     <>
+    <Header1/>
       <Header3 />
       <div className="m-5">
         {loading && <LoadingSpinner />}

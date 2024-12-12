@@ -82,7 +82,7 @@ export async function POST(req) {
     console.log("User Saved:", result);
 
     // Generate a JWT token
-    const token = jwt.sign({ id: result._id }, "Code_MS", { expiresIn: "30d" });
+    const token = jwt.sign({ id: result._id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 
     // Return the response
     return new Response(
