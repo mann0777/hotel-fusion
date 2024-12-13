@@ -3,13 +3,19 @@
 import Header1 from '@/components/Header1';
 import LoadingSpinner from '@/LoadingSpinner';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-
+import Cookies from 'js-cookie';
 const SingleHotel = () => {
   const { id } = useParams();
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  let auth ; 
+  if (typeof window !== "undefined"){
+    auth = Cookies.get('user');2222
+  }
 
   useEffect(() => {
     const fetchHotelDetails = async () => {
@@ -72,9 +78,13 @@ const SingleHotel = () => {
               </li>
             ))}
           </ul>
-        <button className='w-60 h-14 rounded-lg bg-red-400 my-5 text-lg'>
+        {
+          auth ? (<button className='w-60 h-14 rounded-lg bg-red-400 my-5 text-lg'>
           Book Now
-        </button>
+        </button>) : 
+        (<span className='text-2xl'>
+          Please <Link href={'/login'} className='text-blue-500'>Login</Link> to get Offers</span>)
+        }
       </div>
     </div>
     </>
