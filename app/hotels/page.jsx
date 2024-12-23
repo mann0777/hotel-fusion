@@ -1,79 +1,95 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header3 from '../components/Header3';
 import Hotel from '../components/Hotel';
 import LoadingSpinner from '../LoadingSpinner';
 import Header1 from '@/components/Header1';
-
-
-async function fetchHotels(query) {
-  const res = await fetch(`/api/example/hotels?city=${query}`);
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch hotels');
-  }
-
-  const { data } = await res.json();
-  return data;
-}
+import Filters from '@/components/Filters';
 
 const Hotels = () => {
   const searchParams = useSearchParams();
-  const [hotels, setHotels] = useState([]);
+  const [allHotels, setAllHotels] = useState([]);
+  const [filteredHotels, setFilteredHotels] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const query = searchParams.get('city') || '';
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        if (query) {
-          const data = await fetchHotels(query);
-          setHotels(data);
-        } else {
-          setHotels([]);
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+  // Optimize fetch with useCallback
+  const fetchHotels = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (query) {
+        const res = await fetch(`/api/example/hotels?city=${encodeURIComponent(query)}`);
+        if (!res.ok) throw new Error('Failed to fetch hotels');
+        const { data } = await res.json();
+        setAllHotels(data);
+        setFilteredHotels(data);
+      } else {
+        setAllHotels([]);
+        setFilteredHotels([]);
       }
-    };
-
-    fetchData();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, [query]);
+
+  // Use useEffect with the memoized fetchHotels
+  useEffect(() => {
+    fetchHotels();
+  }, [fetchHotels]);
+
+  // Memoize filter change handler
+  const handleFilterChange = useCallback((hotels) => {
+    setFilteredHotels(hotels);
+  }, []);
+
+  // Memoize hotels rendering to prevent unnecessary re-renders
+  const hotelList = useMemo(() => 
+    filteredHotels.map((hotel) => (
+      <Hotel
+        key={hotel._id}
+        id={hotel._id}
+        name={hotel.name}
+        description={hotel.description}
+        price={hotel.price}
+        facilities={hotel.facilities.map(f => ({...f, img: f.img.trim()}))}
+        imageUrls={[hotel.banner, ...hotel.gallery]}
+      />
+    )), 
+    [filteredHotels]
+  );
 
   return (
     <>
-    <Header1/>
+      <Header1/>
       <Header3 />
-      <div className="m-5">
-        {loading && <LoadingSpinner />}
-        {error && <p className="text-red-500">{error}</p>}
-        {!loading && !error && (
-          <>
-            {hotels && hotels.length > 0 ? (
-              hotels.map((hotel) => (
-                <Hotel
-                  key={hotel._id}
-                  id={hotel._id}
-                  name={hotel.name}
-                  description={hotel.description}
-                  price={hotel.price}
-                  facilities={hotel.facilities.map(f => ({...f, img: f.img.trim()}))}
-                  imageUrls={[hotel.banner, ...hotel.gallery]}
-                />
-              ))
-            ) : (
-              <p>No hotels found for {query}.</p>
+      <div className="grid grid-cols-12">
+        <div className="col-span-3">
+          <Filters 
+            onFilterChange={handleFilterChange} 
+            initialHotels={allHotels}
+          />
+        </div>
+        <div className='col-span-9'>
+          <div className="m-5">
+            {loading && <LoadingSpinner />}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && !error && (
+              <>
+                {filteredHotels.length > 0 ? (
+                  hotelList
+                ) : (
+                  <p>No hotels found for {query}.</p>
+                )}
+              </>
             )}
-          </>
-        )}
+          </div>
+        </div>
       </div>
     </>
   );

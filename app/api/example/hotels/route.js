@@ -48,29 +48,33 @@ export async function GET(req) {
 }
   */
  
-import connectDB from "@/db";  // Adjust the path if necessary
+import connectDB from "@/db";
 import Hotel from "@/models/hotel-model";
 
 export async function GET(req) {
-  // Extract the query parameter 'city' from the request URL
   const { searchParams } = new URL(req.url);
   const city = searchParams.get('city');
 
-  // Connect to the MongoDB database
+  console.log('Received city:', city); // Log the received city
+
   await connectDB();
 
   try {
     let hotels;
+    let query = {};
 
-    if (city) {
-      // If 'city' query parameter is provided, filter by location (city) case-insensitively
-      hotels = await Hotel.find({ location: { $regex: new RegExp(city, 'i') } });
-    } else {
-      // If no query parameter is provided, return all hotels
-      hotels = await Hotel.find({});
+    if (city && city.trim() !== '') {
+      query = { location: { $regex: new RegExp(city, 'i') } };
+      console.log('Search query:', JSON.stringify(query)); // Log the search query
     }
 
-    // Return the fetched hotels in the response
+    hotels = await Hotel.find(query);
+
+    console.log('Number of hotels found:', hotels.length); // Log the number of hotels found
+    if (hotels.length > 0) {
+      console.log('First hotel:', JSON.stringify(hotels[0])); // Log the first hotel
+    }
+
     if (hotels.length > 0) {
       return new Response(
         JSON.stringify({ msg: "Data fetched successfully", data: hotels }),
@@ -83,7 +87,7 @@ export async function GET(req) {
       return new Response(
         JSON.stringify({ msg: "No hotels found", data: [] }),
         {
-          status: 200,  // Changed from 404 to 200 as it's not an error condition
+          status: 200,
           headers: { "Content-Type": "application/json" },
         }
       );
