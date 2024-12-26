@@ -2,14 +2,19 @@
 import { useEffect, useState, useCallback } from "react"
 import axios from 'axios';
 import LoadingSpinner from "@/LoadingSpinner";
-import debounce from 'lodash/debounce'; 
 
-const Filters = ({ onFilterChange, initialHotels }) => {
+const Filters = ({ onFilterChange, initialHotels, city }) => {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null); 
+  
+  // Current filter state
   const [selectedFacilities, setSelectedFacilities] = useState([]);
   const [priceRange, setPriceRange] = useState(2000);
+  
+  // Temporary filter state
+  const [tempSelectedFacilities, setTempSelectedFacilities] = useState([]);
+  const [tempPriceRange, setTempPriceRange] = useState(2000);
 
   useEffect(() => {
     fetchFacilities();
@@ -30,28 +35,25 @@ const Filters = ({ onFilterChange, initialHotels }) => {
     }
   }
 
-  const debouncedFilterHotels = useCallback(
-    debounce(async (facilities, price) => {
-      try {
-        const response = await axios.post('/api/example/facilities', {
-          facilities: facilities,
-          priceRange: [0, parseInt(price)]
-        });
-        onFilterChange(response.data.hotels);
-      } catch (error) {
-        console.error('Filter error', error);
-        setError("Failed to filter hotels");
-      }
-    }, 300),
-    [onFilterChange]
-  );
-
-  useEffect(() => {
-    debouncedFilterHotels(selectedFacilities, priceRange);
-  }, [selectedFacilities, priceRange, debouncedFilterHotels]);
+  const applyFilters = async () => {
+    try {
+      const response = await axios.post('/api/example/facilities', {
+        facilities: tempSelectedFacilities,
+        priceRange: [0, parseInt(tempPriceRange)],
+        city: city
+      });
+      onFilterChange(response.data.hotels);
+      // Update the main state
+      setSelectedFacilities(tempSelectedFacilities);
+      setPriceRange(tempPriceRange);
+    } catch (error) {
+      console.error('Filter error', error);
+      setError("Failed to filter hotels");
+    }
+  };
 
   const handleFacilityChange = (facility) => {
-    setSelectedFacilities(prev => 
+    setTempSelectedFacilities(prev => 
       prev.includes(facility) 
         ? prev.filter(f => f !== facility) 
         : [...prev, facility]
@@ -64,7 +66,7 @@ const Filters = ({ onFilterChange, initialHotels }) => {
   return (
     <div className="border-2 border-red-500 rounded-md m-5 h-auto py-10 px-3">
       <label htmlFor="price" className="text-xl mr-3 font-bold">
-        Price: ${priceRange}
+        Price: ${tempPriceRange}
       </label>
       <input 
         type="range" 
@@ -72,8 +74,8 @@ const Filters = ({ onFilterChange, initialHotels }) => {
         id="price" 
         min={100} 
         max={2000} 
-        value={priceRange}
-        onChange={(e) => setPriceRange(e.target.value)}
+        value={tempPriceRange}
+        onChange={(e) => setTempPriceRange(e.target.value)}
       />
       <div className="my-10">
         <h3 className="text-xl font-bold my-3">Filter by Facilities: </h3>
@@ -86,7 +88,7 @@ const Filters = ({ onFilterChange, initialHotels }) => {
                 name={facility} 
                 id={facility} 
                 className="w-5 h-5 ml-3"
-                checked={selectedFacilities.includes(facility)}
+                checked={tempSelectedFacilities.includes(facility)}
                 onChange={() => handleFacilityChange(facility)}
               />
             </p>
@@ -95,6 +97,12 @@ const Filters = ({ onFilterChange, initialHotels }) => {
           <p>No facilities available</p>
         )}
       </div>
+      <button 
+        onClick={applyFilters}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Apply Filters
+      </button>
     </div>
   )
 }

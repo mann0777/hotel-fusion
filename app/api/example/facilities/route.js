@@ -22,6 +22,10 @@ export async function POST(req) {
 
         // Build the filter query
         const filter = {};
+
+        if (body.city) {
+            filter.location = { $regex: new RegExp(body.city, 'i') };
+        }
         
         if (body.facilities && body.facilities.length > 0) {
             filter['facilities.name'] = { $in: body.facilities };

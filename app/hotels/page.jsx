@@ -16,7 +16,6 @@ const Hotels = () => {
   const [error, setError] = useState(null);
   const query = searchParams.get('city') || '';
 
-  // Optimize fetch with useCallback
   const fetchHotels = useCallback(async () => {
     setLoading(true);
     setError(null);
@@ -38,17 +37,14 @@ const Hotels = () => {
     }
   }, [query]);
 
-  // Use useEffect with the memoized fetchHotels
   useEffect(() => {
     fetchHotels();
   }, [fetchHotels]);
 
-  // Memoize filter change handler
   const handleFilterChange = useCallback((hotels) => {
     setFilteredHotels(hotels);
   }, []);
 
-  // Memoize hotels rendering to prevent unnecessary re-renders
   const hotelList = useMemo(() => 
     filteredHotels.map((hotel) => (
       <Hotel
@@ -73,6 +69,7 @@ const Hotels = () => {
           <Filters 
             onFilterChange={handleFilterChange} 
             initialHotels={allHotels}
+            city={query}
           />
         </div>
         <div className='col-span-9'>
