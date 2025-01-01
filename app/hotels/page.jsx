@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header3 from '../components/Header3';
 import Hotel from '../components/Hotel';
@@ -62,7 +62,7 @@ const Hotels = () => {
 
   return (
     <>
-      <Header1/>
+      <Header1 />
       <Header3 />
       <div className="grid grid-cols-12">
         <div className="col-span-3">
@@ -74,17 +74,20 @@ const Hotels = () => {
         </div>
         <div className='col-span-9'>
           <div className="m-5">
-            {loading && <LoadingSpinner />}
-            {error && <p className="text-red-500">{error}</p>}
-            {!loading && !error && (
-              <>
-                {filteredHotels.length > 0 ? (
-                  hotelList
-                ) : (
-                  <p>No hotels found for {query}.</p>
-                )}
-              </>
-            )}
+            {/* Use Suspense here */}
+            <Suspense fallback={<LoadingSpinner />}>
+              {loading && <LoadingSpinner />}
+              {error && <p className="text-red-500">{error}</p>}
+              {!loading && !error && (
+                <>
+                  {filteredHotels.length > 0 ? (
+                    hotelList
+                  ) : (
+                    <p>No hotels found for {query}.</p>
+                  )}
+                </>
+              )}
+            </Suspense>
           </div>
         </div>
       </div>
