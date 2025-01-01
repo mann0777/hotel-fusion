@@ -3,13 +3,13 @@ import connectDB from "@/db";
 import Hotel from "@/models/hotel-model";
 
 export async function GET(request, {params}) {
-    const { id } = params;
+    const { id } = await params;
     await connectDB();
 
     try{
         const hotel = await Hotel.findById(id);
         if(!hotel){
-            return NextRespone.json({message: "Hotel not found"},
+            return NextResponse.json({message: "Hotel not found"},
                 {status: 404});
         } 
         return NextResponse.json(hotel);
