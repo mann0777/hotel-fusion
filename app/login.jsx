@@ -57,7 +57,7 @@ const Login = () => {
         </div>
         <div className='flex justify-center items-center w-9/12'>
           <div className='text-white mb-20'>
-            <p className='font-bold text-4xl text-justify'>There's a smarter way to Fusion around</p>
+            <p className='font-bold text-4xl text-justify'>There&apos;s a smarter way to Fusion around</p>
             <p className='text-xl mt-5 text-justify'>Sign up with your phone number and get exclusive access to
               discounts and savings on FUSION stays and with our many travel
               partners
