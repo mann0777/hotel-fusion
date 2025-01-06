@@ -1,5 +1,5 @@
-"use client"
-import { useEffect, useState, useCallback } from "react"
+'use client';
+import { useEffect, useState } from "react";
 import axios from 'axios';
 import LoadingSpinner from "@/LoadingSpinner";
 
@@ -20,11 +20,11 @@ const Filters = ({ onFilterChange, initialHotels, city }) => {
     fetchFacilities();
   }, []);
 
-  const fetchFacilities = async() => {
+  const fetchFacilities = async () => {
     try {
       setLoading(true);
       const response = await axios.get("/api/example/facilities");
-      if(response.data?.facilities){
+      if (response.data?.facilities) {
         setList(response.data.facilities);
       }
     } catch (error) {
@@ -76,13 +76,14 @@ const Filters = ({ onFilterChange, initialHotels, city }) => {
         max={2000} 
         value={tempPriceRange}
         onChange={(e) => setTempPriceRange(e.target.value)}
+        className="w-full"
       />
       <div className="my-10">
         <h3 className="text-xl font-bold my-3">Filter by Facilities: </h3>
         {list.length > 0 ? (
           list.map((facility) => (
-            <p key={facility} className="grid grid-cols-4 my-3">
-              <label htmlFor={facility} className="col-span-2">{facility}</label>
+            <p key={facility} className="flex items-center my-3">
+              <label htmlFor={facility} className="flex-grow">{facility}</label>
               <input 
                 type="checkbox" 
                 name={facility} 
@@ -104,7 +105,7 @@ const Filters = ({ onFilterChange, initialHotels, city }) => {
         Apply Filters
       </button>
     </div>
-  )
+  );
 }
 
-export default Filters
+export default Filters;

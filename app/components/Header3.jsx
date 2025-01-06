@@ -3,59 +3,46 @@ import { useState } from 'react';
 import Link from 'next/link';
 
 const Header3 = () => {
-  // State to hold the search query
   const [city, setCity] = useState('');
 
-  // Handle input change to update the search query
   const handleInputChange = (event) => {
     setCity(event.target.value);
   };
 
   return (
-    <div className="bg-gradient-to-r from-red-600 to-red-400 h-60">
-      <div className="mx-10 p-5">
-        <h2 className="text-4xl text-white text-center font-bold">
+    <div className="bg-gradient-to-r from-red-600 to-red-400 py-8 md:py-12 lg:py-16">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-10 max-w-7xl mx-auto">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl text-white text-center font-bold mb-6">
           Over 157,000 hotels and homes across 35 countries
         </h2>
-        <div className="flex justify-center  my-5 mx-20">
+        <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <input
             type="text"
             placeholder="Search..."
-            className="w-6/12  h-16 outline-none px-3 text-lg border-r-2 border-gray-400 col-span-2"
-            value={city} // bind input value to the state
-            onChange={handleInputChange} // update state on change
+            className="w-full sm:w-6/12 h-12 sm:h-16 outline-none px-3 text-lg border-r-2 border-gray-400"
+            value={city}
+            onChange={handleInputChange}
           />
-          {/*<input
-            type="date"
-            placeholder="Search..."
-            className="h-16 outline-none px-3 text-lg border-r-2 border-gray-400 col-span-1"
-          />
-          <input
-            type="date"
-            placeholder="Search..."
-            className="h-16 outline-none px-3 text-lg border-r-2 border-gray-400 col-span-1"
-          />*/}
-          {/* Dynamically change the link based on user input */}
           <Link href={`/hotels?city=${city}`} passHref>
             <button
               type="submit"
-              className="h-16 px-3 py-2 w-72 bg-green-400 hover:cursor-pointer hover:bg-green-600 text-white"
+              className="w-full sm:w-auto h-12 sm:h-16 px-6 py-2 bg-green-400 hover:bg-green-600 text-white text-lg transition-colors duration-300"
             >
               Search
             </button>
           </Link>
         </div>
 
-        <div className="flex mx-20 my-5">
+        <div className="flex flex-col sm:flex-row justify-center items-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
           <button
             type="submit"
-            className="h-16 px-3 py-2 hover:cursor-pointer text-white text-xl mr-5"
+            className="w-full sm:w-auto h-12 sm:h-16 px-4 py-2 hover:bg-white hover:bg-opacity-20 text-white text-lg transition-colors duration-300 rounded"
           >
             Continue your search
           </button>
           <button
             type="submit"
-            className="h-16 px-3 py-2 hover:cursor-pointer border-2 border-white text-white mr-5 hover:bg-gray-500 rounded-xl"
+            className="w-full sm:w-auto h-12 sm:h-16 px-4 py-2 border-2 border-white text-white hover:bg-white hover:text-red-600 rounded transition-colors duration-300"
           >
             Homestay in India Hotels
           </button>
